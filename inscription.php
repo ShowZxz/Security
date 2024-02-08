@@ -22,12 +22,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (password_verify($password, $hashed_password)) {
 
                 
-                echo "Vous etes connecté";
+                echo "<div class='success-message'>Vous êtes connecté</div>";
             }
         } else {
 
 
-            echo "Erreur. Recommencé";
+            echo "<div class='error-message'>Erreur. Recommencez</div>";
+
         }
 
     } elseif (isset($_POST["ajout_compte"])) {
@@ -82,13 +83,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Sécuriser</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
     <div style="text-align: center;">
         <form action="inscription.php" method="post">
             <h1>Login</h1>
+            <img src="logo.png" alt="Logo" style="width: 100px; height: 100px;">
             <div class="input-box">
                 <input type="text" name="identifiant" placeholder="Identifiant" required>
             </div>
