@@ -1,7 +1,9 @@
+LOGIN :
 
 Identifiant : admin
 Mot de passe : 1Mot de passe
 
+INFORMATION TECHNIQUE :
 
 1. Requêtes préparées :Utilisation des requêtes préparées ($pdo->prepare()) pour interagir avec la base de données, ce qui protège contre les attaques par injection SQL.
 
@@ -12,3 +14,15 @@ Mot de passe : 1Mot de passe
 4. Utilisation de htmlspecialchars : Utilisation htmlspecialchars pour échapper les caractères spéciaux dans l'identifiant. Cela protège contre les attaques XSS en rendant inoffensives les balises HTML potentiellement dangereuses.
 
 5. Conditions pour le mot de passe : Mis en place des conditions pour garantir la complexité du mot de passe (longueur, majuscule, chiffre, etc...).
+
+
+COMMENT UTILISER : 
+
+Il faudra fournir un identifiant avec une taille entre 3 et 50 
+Un mot de passe plus long que 6 caractére suivis d'au moins un chiffre et une lettre majuscule.
+
+Les messages d'erreur fourniront des information en cas de problème. 
+
+INFO SUP :
+
+Il y a le fichier sql dans le github 
