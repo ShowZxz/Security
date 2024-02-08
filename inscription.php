@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div style="text-align: center;">
         <form action="inscription.php" method="post">
-            <h1>Login</h1>
+            <h1>Login de SINSEAU Lilian</h1>
             <img src="logo.png" alt="Logo" style="width: 100px; height: 100px;">
             <div class="input-box">
                 <input type="text" name="identifiant" placeholder="Identifiant" required>
