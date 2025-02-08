@@ -1,11 +1,21 @@
 <?php
+session_start();
 require_once 'db.php';
 
+//Token 
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("Erreur de sécurité : Jeton invalide !");
+    }
+
     $identifiant = $_POST["identifiant"];
     $password = $_POST["mot_de_passe"];
-
-
 
     if (isset($_POST["valider"])) {
 
@@ -21,22 +31,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $hashed_password = $user['password'];
             if (password_verify($password, $hashed_password)) {
 
-                
+
                 echo "<div class='success-message'>Vous êtes connecté</div>";
             }
         } else {
 
 
             echo "<div class='error-message'>Erreur. Recommencez</div>";
-
         }
-
     } elseif (isset($_POST["ajout_compte"])) {
         $identifiant = $_POST["identifiant"];
         $password = $_POST["mot_de_passe"];
 
-        $identifiant  = trim($identifiant );
-        
+        $identifiant  = trim($identifiant);
+
         // mes conditions de mdp
 
         if (strlen($password) < 8) {
@@ -45,9 +53,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Erreur  : Le mot de passe doit contenir au moins une lettre majuscule.";
         } elseif (!preg_match("/[0-9]/", $password)) {
             echo "Erreur  : Le mot de passe doit contenir au moins un chiffre.";
-        }
-        elseif (strlen($nom_utilisateur) < 3 || strlen($nom_utilisateur) > 50) {
-            echo "Erreur identifian : Identifiant trop court ou trop long"."<br/>";
+        } elseif (strlen($identifiant) < 3 || strlen($identifiant) > 50) {
+            echo "Erreur identifian : Identifiant trop court ou trop long" . "<br/>";
         } else {
 
 
@@ -55,10 +62,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE nom_utilisateur = :identifiant");
             $stmt->bindParam(':identifiant', $identifiant);
             $stmt->execute();
-    
+
             // Résultat
             $existing_user = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+
             if ($existing_user) {
                 echo "Erreur lors de l'inscription : Identifiant ou mot de passe déjà utilisé !";
             } else {
@@ -69,6 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([$identifiant, $hashed_password]);
                 echo "Inscription réussie. Vous pouvez maintenant vous connecter.";
+                $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
             }
         }
     }
@@ -104,6 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label><input type="submit" name="valider" value="Valider"></label>
                 <label><input type="submit" name="ajout_compte" value="Ajout Compte"></label>
             </div>
+            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
         </form>
     </div>
 

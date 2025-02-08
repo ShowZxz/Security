@@ -1,0 +1,10 @@
+Options -Indexes
+<Files "db.php">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "logo.png">
+    Order Deny,Allow
+    Deny from all
+</Files>
